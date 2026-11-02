@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light">
 <title>Termos de uso — Files2GDrive</title>
-<meta name="description" content="Condições de uso, licença MIT e limites da versão alpha do Files2GDrive.">
+<meta name="description" content="Condições de uso, licença MIT e limites da versão pública 0.1.0 do Files2GDrive.">
 <link rel="canonical" href="https://files2gdrive.erservices.top/termos/">
 <link rel="icon" href="../images/files2gdrive-logo-120.png" type="image/png">
 <link rel="stylesheet" href="../site.css">
@@ -24,13 +24,13 @@
 <p>O código do Files2GDrive é distribuído sob a <a href="https://github.com/eduardoellery/Files2GDrive/blob/main/LICENSE">licença MIT</a>. Ela permite usar, copiar, modificar e redistribuir o software, inclusive comercialmente, preservando o aviso de copyright e o texto da licença nas cópias ou partes substanciais. Dependências de terceiros mantêm suas respectivas licenças.</p>
 <p>Estes termos não restringem as permissões concedidas pela licença MIT. Consulte o arquivo de licença incluído no código e no pacote para o texto aplicável ao software.</p>
 <h2>2. Requisitos e conta Google</h2>
-<p>A versão alpha disponibilizada pelo projeto é destinada ao Ubuntu 24.04 LTS, arquitetura amd64, com Python 3.12. Você precisa de uma conta Google autorizada, espaço disponível no Drive e conectividade para as operações remotas.</p>
+<p>A versão pública 0.1.0 disponibilizada pelo projeto é destinada ao Ubuntu 24.04 LTS, arquitetura amd64, com Python 3.12. Você precisa de uma conta Google autorizada, espaço disponível no Drive e conectividade para as operações remotas.</p>
 <p>O projeto OAuth da distribuição oficial está em produção, conforme atualização do mantenedor em 2 de novembro de 2026, sem necessidade de cadastrar cada conta como testadora. Projetos próprios em modo Testing continuam sujeitos às restrições de testadores. Organizações Google Workspace podem exigir aprovação do administrador ou autenticação frequente; a publicação do OAuth não remove essas políticas nem equivale automaticamente a todas as verificações de marca do Google.</p>
 <p>Use o aplicativo somente com arquivos e contas para os quais você tenha autorização, respeitando as políticas da sua organização e os termos dos serviços utilizados.</p>
 <h2>3. Comportamento do backup</h2>
 <ul><li>A sincronização ocorre do Ubuntu para o Google Drive. Ela não é uma sincronização bidirecional.</li><li>Alterações locais atualizam a cópia corrente. O aplicativo não mantém histórico próprio de versões do conteúdo.</li><li>Arquivos removidos localmente ou retirados da seleção são mantidos em Excluídos por pelo menos 30 dias e depois podem ser enviados à lixeira pelo aplicativo. Não há exclusão definitiva automática.</li><li>Pausar, revogar autorização ou desinstalar não apaga automaticamente arquivos já enviados.</li></ul>
 <p>Você escolhe as pastas, as exceções, os filtros e a conta de destino. Confira essas escolhas, os logs e o estado da fila para verificar se os arquivos esperados foram enviados.</p>
-<h2>4. Limitações da versão alpha</h2>
+<h2>4. Limitações da versão 0.1.0</h2>
 <p>Pastas vazias, links simbólicos e arquivos especiais não são enviados. Não há snapshot conjunto de vários arquivos ou de bancos de dados em uso. Arquivos grandes usam snapshots temporários em disco e precisam de espaço local disponível. Uma sessão de upload interrompida pode precisar reenviar o arquivo inteiro.</p>
 <p>Pausa e encerramento são atendidos entre grupos de operações; envios em andamento podem precisar concluir primeiro. O tempo de backup depende do número e tamanho dos arquivos, das pastas, da conexão e do serviço Google Drive. Não há garantia de taxa ou tempo de conclusão.</p>
 <p>Valide o funcionamento e a restauração com dados de teste antes de depender desta versão. Mantenha outras cópias de arquivos importantes e não presuma que um arquivo está protegido apenas porque o aplicativo está instalado.</p>

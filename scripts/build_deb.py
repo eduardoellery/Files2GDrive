@@ -45,7 +45,7 @@ StartupNotify=false
 Categories=Utility;Archiving;
 X-GNOME-UsesNotifications=true
 {extra}'''
-README = '''Files2GDrive — Ubuntu 24.04 amd64 development package
+README = '''Files2GDrive — Ubuntu 24.04 amd64 public release
 
 Start Files2GDrive from the applications menu. It opens the local configuration
 and tray helper. A global XDG autostart entry starts it silently on session login.
@@ -55,8 +55,10 @@ Secret Service support are required in the desktop session.
 The package contains the OAuth identification of this installed desktop app.
 It does NOT contain any user's Google authorization, refresh tokens, local
 backup state or monitored files. Each user authorizes their own account.
-If the OAuth project is still in Testing, the account must be an approved tester.
-Do not distribute as a public production release before OAuth publication.
+The official distribution uses an OAuth project published in production.
+Workspace accounts remain subject to their organization policies. Distributors
+using their own OAuth project must publish it separately; Testing projects
+continue to require approved testers.
 
 User state lives in $XDG_STATE_HOME/files2gdrive or ~/.local/state/files2gdrive.
 Removal/purge does not delete that state, user keyring entries or remote backups.
@@ -64,9 +66,10 @@ No maintainer script starts processes, touches home directories or deletes data.
 Quit the application before upgrading/removing it; an already running process
 is not forcibly terminated by package installation or removal.
 
-This is an early test build: installation on a clean Ubuntu 24.04 machine,
-large-volume performance and all previously documented production limitations
-still need validation before relying on it for important backups.
+This is an initial 0.x public release. Empty directories, symbolic links and
+special files are not backed up; the app keeps no independent content history.
+Ubuntu 26.04 and other architectures are not supported by this package. Verify
+backup and restore with representative data and retain other important copies.
 '''
 
 
@@ -135,7 +138,7 @@ def _copy_vendor(source: Path, destination: Path):
         raise ValueError('Vendor tree is empty')
 
 
-def build_package(vendor_dir, oauth_client, output_dir=None, version='0.1.0~alpha3', architecture='amd64', *, source_root=None):
+def build_package(vendor_dir, oauth_client, output_dir=None, version='0.1.0', architecture='amd64', *, source_root=None):
     if not isinstance(version, str) or not VERSION.fullmatch(version) or version.endswith('-'):
         raise ValueError('Invalid Debian package version')
     if architecture != 'amd64':
@@ -218,7 +221,7 @@ def main(argv=None):
     parser.add_argument('--vendor-dir', type=Path, required=True)
     parser.add_argument('--oauth-client', type=Path, required=True)
     parser.add_argument('--output-dir', type=Path, default=REPOSITORY / 'dist')
-    parser.add_argument('--version', default='0.1.0~alpha3')
+    parser.add_argument('--version', default='0.1.0')
     parser.add_argument('--architecture', default='amd64')
     args = parser.parse_args(argv)
     try:
