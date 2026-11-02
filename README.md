@@ -105,6 +105,34 @@ python -m files2gdrive --state-dir /caminho/estado-drive desktop
 
 `configure-drive --help` e os demais subcomandos mostram as opções disponíveis. Os comandos diretos que acessam o banco exigem o motor parado; com o aplicativo em execução, use a interface web ou os controles da bandeja. Não execute dois motores sobre o mesmo perfil.
 
+### Organização do ambiente de desenvolvimento
+
+Use um único checkout Git para editar, testar e preparar publicações. Mantenha
+os dados privados fora do repositório; por exemplo:
+
+```text
+~/projetos/Files2GDrive/                # checkout Git: código, testes e docs
+    .venv/                            # ambiente local, ignorado pelo Git
+    dist/                             # artefatos gerados, ignorados pelo Git
+~/.local/share/files2gdrive-dev/        # diretório privado, permissão 0700
+    profile/                          # banco, fila, logs e estado de execução
+    oauth/                            # cliente OAuth local
+    notes/                            # decisões e resumo privado de retomada
+    test-profiles/                    # perfis de testes manuais
+    backups/                          # cópias privadas de segurança
+```
+
+Selecione o perfil explicitamente com `--state-dir`. O aplicativo instalado pelo
+`.deb` usa seu próprio perfil; não compartilhe o mesmo perfil ou identidade de
+backup entre motores ativos. Ao mover um perfil, encerre o motor antes, preserve
+sua identidade e o cofre de credenciais e atualize o caminho do cliente OAuth e
+os atalhos pessoais. Consulte a [integração com Ubuntu](docs/INTEGRACAO-DESKTOP.md).
+
+Faça alterações em branches e publique por pull requests. Distribua apenas os
+arquivos selecionados pelo exportador e pelo empacotador, após revisão; o
+`.gitignore` é uma proteção adicional, não substitui essa conferência. Notas e
+backups privados não fazem parte do código-fonte nem dos anexos das releases.
+
 ## Limitações atuais
 
 - O pacote é destinado ao **Ubuntu 24.04 amd64**. Ubuntu 26.04 e outras arquiteturas ainda não têm suporte validado.
