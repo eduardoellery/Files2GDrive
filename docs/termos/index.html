@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Termos de uso — Files2GDrive</title>
+<meta name="description" content="Condições de uso, licença MIT e limites da versão alpha do Files2GDrive.">
+<link rel="canonical" href="https://files2gdrive.erservices.top/termos/">
+<link rel="icon" href="../images/files2gdrive-logo-120.png" type="image/png">
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<header class="site-header container">
+<a class="brand" href="../"><img src="../images/files2gdrive-logo-120.png" alt="" width="40" height="40"><span>Files2GDrive<small>Ubuntu → Google Drive</small></span></a>
+<nav class="site-nav" aria-label="Navegação principal"><a href="../">Início</a><a href="../privacidade/">Privacidade</a><a href="../termos/">Termos de uso</a></nav>
+</header>
+<main id="conteudo" class="container prose"><article>
+<p class="eyebrow">TRANSPARÊNCIA</p><h1>Termos de uso</h1>
+<p class="updated">Atualizado em <time datetime="2026-11-02">2 de novembro de 2026</time>.</p>
+
+<p>Estes termos descrevem o uso do aplicativo Files2GDrive e deste site, mantidos pelo responsável do <a href="https://github.com/eduardoellery/Files2GDrive">repositório do projeto</a>. O aplicativo é software livre em desenvolvimento para backup de arquivos locais do Ubuntu no Google Drive.</p>
+<h2>1. Licença de software livre</h2>
+<p>O código do Files2GDrive é distribuído sob a <a href="https://github.com/eduardoellery/Files2GDrive/blob/main/LICENSE">licença MIT</a>. Ela permite usar, copiar, modificar e redistribuir o software, inclusive comercialmente, preservando o aviso de copyright e o texto da licença nas cópias ou partes substanciais. Dependências de terceiros mantêm suas respectivas licenças.</p>
+<p>Estes termos não restringem as permissões concedidas pela licença MIT. Consulte o arquivo de licença incluído no código e no pacote para o texto aplicável ao software.</p>
+<h2>2. Requisitos e conta Google</h2>
+<p>A versão alpha disponibilizada pelo projeto é destinada ao Ubuntu 24.04 LTS, arquitetura amd64, com Python 3.12. Você precisa de uma conta Google autorizada, espaço disponível no Drive e conectividade para as operações remotas.</p>
+<p>O Google pode exigir verificação do aplicativo ou limitar contas testadoras. Organizações Google Workspace podem exigir aprovação do administrador ou autenticação frequente. Disponibilizar o pacote não remove essas restrições.</p>
+<p>Use o aplicativo somente com arquivos e contas para os quais você tenha autorização, respeitando as políticas da sua organização e os termos dos serviços utilizados.</p>
+<h2>3. Comportamento do backup</h2>
+<ul><li>A sincronização ocorre do Ubuntu para o Google Drive. Ela não é uma sincronização bidirecional.</li><li>Alterações locais atualizam a cópia corrente. O aplicativo não mantém histórico próprio de versões do conteúdo.</li><li>Arquivos removidos localmente ou retirados da seleção são mantidos em Excluídos por pelo menos 30 dias e depois podem ser enviados à lixeira pelo aplicativo. Não há exclusão definitiva automática.</li><li>Pausar, revogar autorização ou desinstalar não apaga automaticamente arquivos já enviados.</li></ul>
+<p>Você escolhe as pastas, as exceções, os filtros e a conta de destino. Confira essas escolhas, os logs e o estado da fila para verificar se os arquivos esperados foram enviados.</p>
+<h2>4. Limitações da versão alpha</h2>
+<p>Pastas vazias, links simbólicos e arquivos especiais não são enviados. Não há snapshot conjunto de vários arquivos ou de bancos de dados em uso. Arquivos grandes usam snapshots temporários em disco e precisam de espaço local disponível. Uma sessão de upload interrompida pode precisar reenviar o arquivo inteiro.</p>
+<p>Pausa e encerramento são atendidos entre grupos de operações; envios em andamento podem precisar concluir primeiro. O tempo de backup depende do número e tamanho dos arquivos, das pastas, da conexão e do serviço Google Drive. Não há garantia de taxa ou tempo de conclusão.</p>
+<p>Valide o funcionamento e a restauração com dados de teste antes de depender desta versão. Mantenha outras cópias de arquivos importantes e não presuma que um arquivo está protegido apenas porque o aplicativo está instalado.</p>
+<h2>5. Disponibilidade, garantias e responsabilidade</h2>
+<p>O software é fornecido no estado em que se encontra, sem as garantias previstas como excluídas pela licença MIT, na medida permitida pela legislação aplicável. Não há compromisso de disponibilidade contínua, prazo de suporte, compatibilidade com todas as versões do Ubuntu ou funcionamento sem interrupções.</p>
+<p>O Google Drive, o GitHub e demais serviços externos têm seus próprios termos, limites, políticas e disponibilidade. Estes termos não substituem condições desses serviços nem afastam direitos que a legislação não permita excluir.</p>
+<h2>6. Privacidade, suporte e atualizações</h2>
+<p>O tratamento de dados é descrito na <a href="../privacidade/">Política de Privacidade</a>. O projeto não solicita a sua senha Google e não recebe automaticamente os arquivos do seu backup.</p>
+<p>O canal de suporte é a <a href="https://github.com/eduardoellery/Files2GDrive/issues">página pública de issues</a>. Não publique credenciais, arquivos particulares ou logs sem revisão. Atualizações e versões são divulgadas no repositório e nas releases do projeto.</p>
+<p>Estes termos podem ser atualizados nesta página para acompanhar o funcionamento do aplicativo; a data no início identifica a versão do texto. As licenças distribuídas com uma versão do software continuam aplicáveis àquela distribuição.</p>
+
+</article></main>
+<footer class="site-footer container"><div class="footer-brand"><a class="brand" href="../"><img src="../images/files2gdrive-logo-120.png" width="34" height="34" alt=""><span>Files2GDrive<small>Ubuntu → Google Drive</small></span></a></div><nav class="footer-links" aria-label="Informações do projeto"><a href="../privacidade/">Privacidade</a><a href="../termos/">Termos de uso</a><a href="https://github.com/eduardoellery/Files2GDrive/issues">Contato e suporte</a></nav><p class="footer-note">Software livre · Licença MIT · Uma cópia no seu Drive.</p></footer>
+</body></html>

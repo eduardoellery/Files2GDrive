@@ -1,5 +1,7 @@
 # Files2GDrive
 
+[Site do aplicativo](https://files2gdrive.erservices.top/) · [Privacidade](https://files2gdrive.erservices.top/privacidade/) · [Termos de uso](https://files2gdrive.erservices.top/termos/)
+
 Backup contínuo de arquivos locais do Ubuntu para o Google Drive, com configuração pelo navegador e controles na bandeja do sistema.
 
 ![Visão geral do Files2GDrive, com Google Drive autenticado e nenhuma operação pendente](docs/images/visao-geral.png)

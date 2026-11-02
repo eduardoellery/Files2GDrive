@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Política de Privacidade — Files2GDrive</title>
+<meta name="description" content="Como o Files2GDrive acessa, usa, armazena e compartilha dados do backup e da autorização Google.">
+<link rel="canonical" href="https://files2gdrive.erservices.top/privacidade/">
+<link rel="icon" href="../images/files2gdrive-logo-120.png" type="image/png">
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<header class="site-header container">
+<a class="brand" href="../"><img src="../images/files2gdrive-logo-120.png" alt="" width="40" height="40"><span>Files2GDrive<small>Ubuntu → Google Drive</small></span></a>
+<nav class="site-nav" aria-label="Navegação principal"><a href="../">Início</a><a href="../privacidade/">Privacidade</a><a href="../termos/">Termos de uso</a></nav>
+</header>
+<main id="conteudo" class="container prose"><article>
+<p class="eyebrow">TRANSPARÊNCIA</p><h1>Política de Privacidade</h1>
+<p class="updated">Atualizado em <time datetime="2026-11-02">2 de novembro de 2026</time>.</p>
+
+<p>Esta política explica como o Files2GDrive trata dados no aplicativo para Ubuntu e neste site. O projeto é mantido pelo responsável do <a href="https://github.com/eduardoellery/Files2GDrive">repositório Files2GDrive</a>. O canal público de contato é a <a href="https://github.com/eduardoellery/Files2GDrive/issues">página de suporte do projeto</a>.</p>
+<h2>1. Para que usamos seus dados</h2>
+<p>O aplicativo envia ao seu Google Drive os arquivos das pastas locais que você seleciona, atualiza as cópias após alterações e permite consultar e restaurar backups. A sincronização é do Ubuntu para o Drive; alterações remotas não são copiadas automaticamente para o computador.</p>
+<p>Os dados são utilizados para executar essas funções, controlar a fila, recuperar operações interrompidas e apresentar o estado do backup. O aplicativo não envia arquivos ou tokens para um servidor do mantenedor.</p>
+<h2>2. Autorização e acesso ao Google Drive</h2>
+<p>A autenticação ocorre na página do Google, aberta no navegador. O aplicativo não recebe nem armazena sua senha Google. Ele solicita o escopo <code>https://www.googleapis.com/auth/drive.file</code>, que permite trabalhar com arquivos criados pelo aplicativo ou disponibilizados a ele, conforme a autorização concedida pelo Google. Não é uma solicitação de acesso irrestrito a todos os arquivos do seu Drive.</p>
+<p>O aplicativo recebe tokens de acesso e renovação e consulta um identificador técnico da conta para impedir que o mesmo estado local seja usado inadvertidamente com outra conta. A política da sua organização Google Workspace pode exigir nova autenticação ou restringir o acesso.</p>
+<h2>3. Conteúdo e metadados dos backups</h2>
+<p>São transferidos diretamente do seu computador para a API do Google Drive:</p>
+<ul><li>O conteúdo dos arquivos selecionados, incluindo arquivos em diretórios ocultos quando incluídos na seleção.</li><li>Nomes de arquivos e diretórios e sua organização dentro do backup.</li><li>Metadados necessários à recuperação: caminho relativo, permissões comuns do Linux, data de modificação, nomes atribuídos ao computador e às pastas, identificadores do backup, estado e data de exclusão quando aplicável.</li></ul>
+<p>O Google Drive também fornece metadados como identificadores, tamanho e checksum para localizar e conferir arquivos. Parte dos metadados do backup é gravada na descrição e nas propriedades dos arquivos no Drive. Evite usar nomes de computador ou pasta que você não queira armazenar na conta de destino.</p>
+<p>O app não adiciona criptografia de ponta a ponta ao conteúdo. A conta, o armazenamento e o tratamento de dados pelo Google estão sujeitos à <a href="https://policies.google.com/privacy">Política de Privacidade do Google</a> e às configurações de compartilhamento e administração dessa conta.</p>
+<h2>4. Dados mantidos no computador</h2>
+<ul><li><strong>Credenciais:</strong> tokens são guardados no cofre Secret Service da sessão Ubuntu. A proteção depende também da configuração e segurança do seu sistema.</li><li><strong>Estado local:</strong> um banco SQLite mantém configurações, caminhos monitorados, identificadores, características dos arquivos, estado do backup e fila de operações.</li><li><strong>Cópias temporárias:</strong> o envio usa snapshots privados temporários em disco; podem existir até quatro ao mesmo tempo. Eles são fechados ao concluir ou interromper a operação.</li><li><strong>Logs:</strong> registros locais podem conter caminhos, horários, operações e motivos de falha. O aplicativo não foi projetado para registrar tokens ou conteúdo dos arquivos. Por padrão, os logs são rotacionados e limitados a até 30 dias ou 100 MiB, podendo ser removidos antes por esses limites.</li></ul>
+<p>O aplicativo não possui telemetria analítica própria nem envia automaticamente esses logs ao mantenedor. Se você compartilhar um log em um pedido de suporte, revise antes nomes de arquivos, caminhos e outras informações particulares.</p>
+<h2>5. Compartilhamento e uso limitado dos dados Google</h2>
+<p>O uso e a transferência de informações recebidas das APIs do Google pelo Files2GDrive seguem a <a href="https://developers.google.com/terms/api-services-user-data-policy">Política de Dados do Usuário dos Serviços de API do Google</a>, incluindo os requisitos de uso limitado (<em>Limited Use</em>).</p>
+<p>Esses dados são usados somente para fornecer as funções de backup, gerenciamento e restauração descritas aqui. O projeto não os vende, não os utiliza para publicidade, não os entrega a corretores de dados e não os utiliza para treinar modelos de inteligência artificial. O mantenedor não recebe acesso aos backups por você instalar ou autorizar o aplicativo.</p>
+<p>As transferências necessárias são feitas entre o aplicativo e o Google. A configuração de compartilhamento dos arquivos no Drive, as regras da organização e dados que você decidir fornecer ao suporte são controlados separadamente.</p>
+<h2>6. Retenção, exclusão e controle</h2>
+<p>Quando um arquivo é removido localmente ou excluído da seleção do backup, sua cópia remota é mantida em <strong>Excluídos por pelo menos 30 dias</strong>. Após esse prazo, uma operação posterior do aplicativo pode enviá-la à lixeira do Drive. O aplicativo não esvazia a lixeira nem faz exclusão definitiva. Pausa, falta de conexão ou falhas podem adiar essas operações.</p>
+<p>Você pode pausar os envios, alterar a seleção e revogar a autorização nas <a href="https://myaccount.google.com/connections">conexões da sua Conta Google</a>. Revogar o acesso não apaga automaticamente o backup; a fila local permanece para eventual reconexão. Dados já enviados podem ser gerenciados diretamente no Google Drive.</p>
+<p>Desinstalar o pacote não apaga automaticamente o perfil local nem os dados no Drive. Para remover dados locais de configuração e logs, encerre o aplicativo e remova o perfil correspondente; credenciais remanescentes podem ser removidas pelo gerenciador do cofre da sessão. Se precisar de orientação, use o canal de suporte. Excluir o estado local pode eliminar informações necessárias à continuidade e recuperação do backup.</p>
+<h2>7. Este site e serviços de terceiros</h2>
+<p>Este site é estático, hospedado no GitHub Pages, com DNS administrado pelo Cloudflare. Não contém formulário de cadastro, login Google, publicidade, scripts analíticos ou cookies próprios do projeto. A autorização para backup ocorre no aplicativo instalado, não neste site.</p>
+<p>Ao acessar o site ou seguir seus links, os provedores de hospedagem, DNS e serviços externos podem tratar dados técnicos, como endereço IP, informações do navegador e registros de acesso, conforme seus próprios serviços e políticas. Consulte as políticas do <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub</a>, do <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a> e do <a href="https://policies.google.com/privacy">Google</a>.</p>
+<h2>8. Contato e alterações desta política</h2>
+<p>Para dúvidas sobre dados tratados pelo projeto, entre em contato com o <a href="https://github.com/eduardoellery/Files2GDrive/issues">mantenedor pela página de suporte</a>. Esse canal é público: não envie senhas, tokens, documentos privados ou logs sem revisão. Dados mantidos na sua Conta Google devem ser gerenciados também pelos controles do Google.</p>
+<p>Alterações desta política serão publicadas nesta página com uma nova data. Mudanças que ampliem o uso de dados Google precisam ser informadas antes do novo uso, com renovação do consentimento quando necessária.</p>
+
+</article></main>
+<footer class="site-footer container"><div class="footer-brand"><a class="brand" href="../"><img src="../images/files2gdrive-logo-120.png" width="34" height="34" alt=""><span>Files2GDrive<small>Ubuntu → Google Drive</small></span></a></div><nav class="footer-links" aria-label="Informações do projeto"><a href="../privacidade/">Privacidade</a><a href="../termos/">Termos de uso</a><a href="https://github.com/eduardoellery/Files2GDrive/issues">Contato e suporte</a></nav><p class="footer-note">Software livre · Licença MIT · Uma cópia no seu Drive.</p></footer>
+</body></html>

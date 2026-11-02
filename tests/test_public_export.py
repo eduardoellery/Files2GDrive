@@ -15,7 +15,9 @@ class PublicExportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary) / 'source'; root.mkdir()
             safe = ['README.md', 'LICENSE', 'pyproject.toml', '.gitignore',
-                    'src/files2gdrive/engine.py', 'docs/INTERFACE-WEB.md']
+                    'src/files2gdrive/engine.py', 'docs/INTERFACE-WEB.md',
+                    'docs/CNAME', 'docs/.nojekyll', 'docs/index.html',
+                    'docs/privacidade/index.html', 'docs/termos/index.html']
             private = ['.runtime-drive/oauth-client.json', '.runtime-drive/state.sqlite3',
                        '.private-notes/DECISOES.md', '.env', 'client_secret.json',
                        '.git/config', '.venv/lib/private.py', 'dist/private.py',

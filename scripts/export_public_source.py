@@ -12,6 +12,8 @@ TOP = {'README.md', 'LICENSE', 'pyproject.toml', '.gitignore', 'PUBLISHING.md'}
 GUIDES = {'ARQUITETURA-PROPOSTA.md', 'REQUISITOS.md', 'GUIA-GOOGLE-DRIVE.md',
           'INSTALACAO-DEB.md', 'INTEGRACAO-DESKTOP.md', 'INTERFACE-WEB.md',
           'RESTAURACAO-E-RECONEXAO.md'}
+SITE = {'docs/index.html', 'docs/site.css', 'docs/CNAME', 'docs/.nojekyll',
+        'docs/images/files2gdrive-logo-120.png', 'docs/privacidade/index.html', 'docs/termos/index.html'}
 EXTENSIONS = {'src': {'.py', '.html', '.css', '.js', '.svg'}, 'tests': {'.py'},
               'scripts': {'.py'}, 'packaging': {'.txt', '.lock'}}
 
@@ -22,9 +24,9 @@ def selected_files(root):
         relative = path.relative_to(root)
         parts = relative.parts
         if any(part.startswith('.') or part == '__pycache__' or part.endswith('.egg-info')
-               for part in parts) and str(relative) != '.gitignore':
+               for part in parts) and str(relative) not in TOP | SITE:
             continue
-        selected = str(relative) in TOP
+        selected = relative.as_posix() in TOP | SITE
         selected |= len(parts) > 1 and parts[0] in EXTENSIONS and path.suffix in EXTENSIONS[parts[0]]
         selected |= len(parts) == 2 and parts[0] == 'docs' and parts[1] in GUIDES
         selected |= relative.as_posix() == 'docs/images/visao-geral.png'
