@@ -2,7 +2,7 @@
 
 ## Artefato gerado
 
-`dist/files2gdrive_0.1.0~alpha3_amd64.deb`
+`dist/files2gdrive_0.1.0-alpha3_amd64.deb`
 
 Alvo: Ubuntu 24.04, arquitetura amd64, Python do sistema 3.12. Não é um pacote arm64 nem uma versão validada para outras versões do Ubuntu.
 
@@ -13,7 +13,7 @@ A versão é alpha. Os testes automatizados e a execução do pacote extraído s
 Fechar o Files2GDrive antes de instalar, atualizar ou remover. No diretório do arquivo:
 
 ```bash
-sudo apt install ./files2gdrive_0.1.0~alpha3_amd64.deb
+sudo apt install ./files2gdrive_0.1.0-alpha3_amd64.deb
 ```
 
 O APT instala as dependências nativas necessárias. As dependências Python estão incluídas no pacote; não é necessário instalar pip ou montar um ambiente virtual na máquina destinatária.
@@ -71,7 +71,7 @@ Remoção/purge não apagam perfil pessoal, tokens no cofre nem arquivos no Driv
 No diretório dos artefatos:
 
 ```bash
-sha256sum -c files2gdrive_0.1.0~alpha3_amd64.deb.sha256
+sha256sum --ignore-missing -c SHA256SUMS
 ```
 
 Há um manifesto SHA256 por arquivo ao lado do pacote. O único cliente OAuth incluído é a identificação do aplicativo Desktop. Nenhum token/autorização de usuário, banco, log, arquivo monitorado, `.runtime*` ou `.venv` foi incluído.
@@ -109,3 +109,5 @@ A construção usa uma whitelist de módulos/assets e rejeita tokens no JSON OAu
 O alpha3 inclui o seletor de pastas com exceções por subdiretório, indicador de autenticação, preparação de diretórios em lote e até quatro uploads simultâneos. Arquivos de até 5 MiB usam upload multipart; maiores usam upload retomável. O esquema atual do banco é 4; não execute o alpha1 sobre um perfil já migrado.
 
 A aplicação usa a licença MIT, cujo texto acompanha o pacote em `/usr/share/doc/files2gdrive/copyright`. As dependências mantêm suas próprias licenças, incluídas no diretório privado do aplicativo.
+
+Na release GitHub, o nome do instalador usa `0.1.0-alpha3`; a versão Debian interna permanece `0.1.0~alpha3`. O script de build local gera o nome com `~`.

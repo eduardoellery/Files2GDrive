@@ -24,7 +24,7 @@ A sincronização é **Ubuntu → Google Drive**. Alterações no Drive não sã
 Baixe o pacote `.deb` na [release v0.1.0-alpha3](https://github.com/eduardoellery/Files2GDrive/releases/tag/v0.1.0-alpha3) e execute no diretório do arquivo:
 
 ```bash
-sudo apt install ./files2gdrive_0.1.0~alpha3_amd64.deb
+sudo apt install ./files2gdrive_0.1.0-alpha3_amd64.deb
 ```
 
 O APT instala as dependências nativas; as dependências Python já estão incluídas no pacote. Não é necessário instalar `pip` ou `watchdog` separadamente.
