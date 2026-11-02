@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import tarfile
 
-TOP = {'README.md', 'LICENSE', 'pyproject.toml', '.gitignore', 'PUBLISHING.md'}
+TOP = {'AGENTS.md', 'README.md', 'LICENSE', 'pyproject.toml', '.gitignore', 'PUBLISHING.md'}
 GUIDES = {'ARQUITETURA-PROPOSTA.md', 'REQUISITOS.md', 'GUIA-GOOGLE-DRIVE.md',
           'INSTALACAO-DEB.md', 'INTEGRACAO-DESKTOP.md', 'INTERFACE-WEB.md',
           'RESTAURACAO-E-RECONEXAO.md'}

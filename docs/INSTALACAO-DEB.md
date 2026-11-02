@@ -26,7 +26,7 @@ Abrir **Files2GDrive** no menu de aplicativos ou executar:
 
 A primeira execução prepara um perfil novo em modo Google Drive, sem pastas monitoradas nem autorização Google. A identificação OAuth Desktop do aplicativo está integrada; clicar em **Conectar ao Google** e autorizar a própria conta. Não é necessário criar projeto ou fornecer JSON por destinatário.
 
-**O acesso depende da configuração do projeto OAuth do distribuidor.** Se estiver no modo de teste, somente contas adicionadas como testadoras conseguem autorizar o aplicativo. Para distribuição geral, o responsável pelo projeto precisa preparar sua publicação e atender aos requisitos do Google. Contas Workspace também estão sujeitas às políticas da organização.
+**O projeto OAuth da distribuição oficial está em produção** desde a atualização informada pelo mantenedor em 2 de novembro de 2026; não é mais necessário cadastrar cada conta como testadora. O domínio teve a propriedade verificada no Google Search Console e o site público usa HTTPS obrigatório com certificado válido. Contas Workspace continuam sujeitas às políticas da organização. Quem construir uma distribuição com cliente OAuth próprio precisa configurar e publicar esse projeto separadamente; em Testing, continuam valendo suas restrições de contas testadoras. O aplicativo permanece alpha.
 
 Estado por usuário: `$XDG_STATE_HOME/files2gdrive` quando absoluto; caso contrário, `~/.local/state/files2gdrive`. Tokens continuam no Secret Service/cofre do Ubuntu.
 

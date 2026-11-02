@@ -38,8 +38,8 @@ Usar identificadores persistentes por computador e pasta, com nomes exibidos con
 - Projeto Google Cloud mantido pelo distribuidor; destinatários apenas autenticam suas próprias contas.
 - Escopo inicial proposto: `drive.file`, para arquivos criados ou explicitamente autorizados ao app. Não permite acesso geral a arquivos arbitrários do Drive.
 - Criar a pasta de backup pelo aplicativo; seleção de pasta preexistente exigiria um fluxo de autorização apropriado.
-- Publicar o cliente de produção antes da distribuição contínua: em Testing, tokens para escopos Drive expiram em sete dias.
-- Preparar identidade pública, suporte, homepage, política de privacidade e requisitos de verificação de marca aplicáveis. Escopo não sensível não elimina toda preparação de publicação.
+- A distribuição oficial usa projeto OAuth em produção, conforme confirmação do mantenedor em 2 de novembro de 2026. Projetos próprios de desenvolvimento em Testing continuam sujeitos às regras desse modo.
+- Identidade pública, suporte, homepage e políticas estão publicados em `https://files2gdrive.erservices.top/`, com HTTPS obrigatório e propriedade do domínio verificada no Google Search Console. Publicação do OAuth não equivale automaticamente à aprovação de toda verificação de marca aplicável.
 - Validar restauração e redescoberta dos backups em uma instalação nova usando o mesmo cliente de produção.
 
 ## Limitações e validações pendentes
