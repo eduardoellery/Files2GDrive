@@ -13,11 +13,14 @@ O arquivo gerado em `dist/` contém README, licença, fontes, testes, scripts,
 locks de dependências, guias e a captura de tela. O exportador usa uma lista
 explícita de arquivos e tipos permitidos. Confira seu manifesto antes de publicar.
 
-Extraia o arquivo em uma pasta separada para iniciar o repositório Git. Não use
-o diretório de desenvolvimento inteiro como arquivo de distribuição. A exportação
-não inclui histórico Git.
+O desenvolvimento acontece em um único checkout Git. Não é necessário manter
+um segundo diretório de fontes para publicar: gere a distribuição revisada a
+partir do checkout e confira o manifesto. Não use o diretório de desenvolvimento
+inteiro como arquivo de distribuição. A exportação não inclui histórico Git.
 
-Ficam fora do código público: perfis `.runtime*`, notas em `.private-notes`,
+Mantenha perfis, configurações OAuth e notas privadas fora do checkout.
+Consulte a organização sugerida no README. O `.gitignore` também exclui
+perfis legados `.runtime*`, notas em `.private-notes`,
 ambientes virtuais, logs, bancos, tokens, configurações OAuth locais, instaladores
 e relatórios privados. Esses dados não precisam ser apagados para publicar os
 fontes. Uma revisão de privacidade deve ser repetida a cada nova publicação.
