@@ -1,0 +1,32 @@
+# Local environments and generated artifacts
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Private development profiles, decisions and credentials
+.runtime*/
+.private-notes/
+.env
+.env.*
+!.env.example
+client_secret*.json
+oauth-client.json
+token.json
+tokens.json
+*.sqlite3
+*.sqlite3-*
+*.log
+*.sock
+*.pid
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+*~
