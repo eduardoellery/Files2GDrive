@@ -159,6 +159,8 @@ A suíte usa diretórios temporários e dublês da API, sem precisar autenticar 
 
 ## Documentação
 
+- [Estatísticas e consentimento do site público](docs/ANALYTICS.md)
+
 - [Instalador Debian](docs/INSTALACAO-DEB.md)
 - [Integração com Ubuntu](docs/INTEGRACAO-DESKTOP.md)
 - [Interface web local](docs/INTERFACE-WEB.md)
