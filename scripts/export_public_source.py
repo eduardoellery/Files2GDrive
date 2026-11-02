@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import tarfile
 
-TOP = {'AGENTS.md', 'README.md', 'LICENSE', 'pyproject.toml', '.gitignore', 'PUBLISHING.md'}
+TOP = {'CHANGELOG.md', 'AGENTS.md', 'README.md', 'LICENSE', 'pyproject.toml', '.gitignore', 'PUBLISHING.md'}
 GUIDES = {'ARQUITETURA-PROPOSTA.md', 'REQUISITOS.md', 'GUIA-GOOGLE-DRIVE.md',
           'INSTALACAO-DEB.md', 'INTEGRACAO-DESKTOP.md', 'INTERFACE-WEB.md',
           'RESTAURACAO-E-RECONEXAO.md'}
@@ -62,6 +62,6 @@ def export(root, output):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=Path('dist/files2gdrive-source-0.1.0-alpha3.tar.gz'))
+    parser.add_argument('--output', type=Path, default=Path('dist/files2gdrive-source-0.1.0.tar.gz'))
     args = parser.parse_args()
     print(f'{export(Path(__file__).resolve().parents[1], args.output)} public files exported to {args.output}')

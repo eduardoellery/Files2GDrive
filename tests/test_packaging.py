@@ -42,6 +42,17 @@ class PackageTests(unittest.TestCase):
         subprocess.run(['dpkg-deb', '--extract', str(artifact), str(target)], check=True, capture_output=True)
         return target
 
+    def test_public_release_version_matches_metadata_and_upgrades_alpha(self):
+        import tomllib
+        artifact = self.build(); target = self.extract(artifact)
+        version = tomllib.loads((builder.REPOSITORY / 'pyproject.toml').read_text())['project']['version']
+        self.assertEqual(version, '0.1.0')
+        self.assertEqual(artifact.name, f'files2gdrive_{version}_amd64.deb')
+        self.assertEqual((target / 'usr/share/files2gdrive/VERSION').read_text().strip(), version)
+        actual = subprocess.check_output(['dpkg-deb', '--field', str(artifact), 'Version'], text=True).strip()
+        self.assertEqual(actual, version)
+        subprocess.run(['dpkg', '--compare-versions', actual, 'gt', '0.1.0~alpha3'], check=True)
+
     def test_payload_contains_only_app_dependencies_and_public_client(self):
         artifact = self.build(); target = self.extract(artifact)
         self.assertTrue(artifact.is_file())

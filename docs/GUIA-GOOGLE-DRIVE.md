@@ -15,7 +15,7 @@
 - Estado local vinculado a `about.user.permissionId`. Trocar a conta não reutiliza silenciosamente os IDs da conta anterior.
 - Simulador permanece padrão; não converter automaticamente estado de simulação com arquivos observados para backend real.
 
-O código tem testes com dublês da API e validação real do login, envio (incluindo múltiplos blocos), edição, renomeação, retenção, reaparecimento e pausa. O aplicativo permanece alpha: recuperação, falhas de rede e escala ainda exigem avaliação contínua, independentemente do status de produção do OAuth.
+O código tem testes com dublês da API e validação real do login, envio (incluindo múltiplos blocos), edição, renomeação, retenção, reaparecimento e pausa. A release pública atual é `0.1.0`. O mantenedor confirmou o fluxo manual de desinstalação, limpeza do estado de teste, nova autorização e reinstalação com backup em outro Ubuntu; recuperação, falhas de rede e escala continuam exigindo avaliação conforme o ambiente e o acervo.
 
 ## Estado da distribuição oficial
 
@@ -29,7 +29,7 @@ Atualização do mantenedor em 2 de novembro de 2026:
 - Termos de Uso: https://files2gdrive.erservices.top/termos/
 - Domínio autorizado no GCP: `erservices.top`.
 
-Esse status não elimina políticas corporativas do Workspace, não muda a condição alpha do software e não afirma aprovação de verificações de marca que não tenham sido confirmadas pelo Google. A preparação abaixo continua relevante para desenvolvimento e distribuições com cliente OAuth próprio.
+Esse status não elimina políticas corporativas do Workspace, não define a estabilidade da API do aplicativo e não afirma aprovação de verificações de marca que não tenham sido confirmadas pelo Google. A preparação abaixo continua relevante para desenvolvimento e distribuições com cliente OAuth próprio.
 
 ## Preparação de um projeto próprio pelo mantenedor
 

@@ -1,4 +1,6 @@
 import json
+import io
+from contextlib import redirect_stdout
 import os
 from pathlib import Path
 import tempfile
@@ -21,6 +23,18 @@ class PackagedLauncherTests(unittest.TestCase):
             'token_uri':'https://oauth2.googleapis.com/token'}}))
         self.context=patch('files2gdrive.runtime_context._launcher',None); self.context.start()
     def tearDown(self): self.context.stop(); self.temp.cleanup()
+    def test_release_version_uses_packaged_metadata_or_public_fallback(self):
+        output = io.StringIO()
+        with redirect_stdout(output):
+            main(self.resources, Path('/usr/bin/files2gdrive'), ['--version'])
+        self.assertEqual(output.getvalue().strip(), 'Files2GDrive 0.1.0')
+        (self.resources / 'VERSION').write_text('0.1.1\n')
+        output = io.StringIO()
+        with redirect_stdout(output):
+            main(self.resources, Path('/usr/bin/files2gdrive'), ['--version'])
+        self.assertEqual(output.getvalue().strip(), 'Files2GDrive 0.1.1')
+        self.assertFalse((self.base / 'state').exists())
+
     def test_new_profile_uses_drive_without_any_google_authorization(self):
         state=self.base/'state'
         self.assertTrue(prepare_new_state(state,self.resources))

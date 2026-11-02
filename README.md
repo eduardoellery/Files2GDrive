@@ -6,7 +6,7 @@ Backup contínuo de arquivos locais do Ubuntu para o Google Drive, com configura
 
 ![Visão geral do Files2GDrive, com Google Drive autenticado e nenhuma operação pendente](docs/images/visao-geral.png)
 
-**Versão alpha para Ubuntu 24.04 LTS, amd64 e Python 3.12.** O projeto está em desenvolvimento e deve ser avaliado com dados de teste antes de ser usado como única cópia de arquivos importantes.
+**Release pública v0.1.0 para Ubuntu 24.04 LTS, amd64 e Python 3.12.** Esta é a primeira versão sem sufixo de pré-lançamento. A série `0.x` ainda representa a evolução inicial do projeto; consulte as limitações e mantenha outras cópias de arquivos importantes.
 
 ## Funcionalidades
 
@@ -23,10 +23,10 @@ A sincronização é **Ubuntu → Google Drive**. Alterações no Drive não sã
 
 ## Instalar
 
-Baixe o pacote `.deb` na [release v0.1.0-alpha3](https://github.com/eduardoellery/Files2GDrive/releases/tag/v0.1.0-alpha3) e execute no diretório do arquivo:
+Baixe o pacote `.deb` na [release v0.1.0](https://github.com/eduardoellery/Files2GDrive/releases/tag/v0.1.0) e execute no diretório do arquivo:
 
 ```bash
-sudo apt install ./files2gdrive_0.1.0-alpha3_amd64.deb
+sudo apt install ./files2gdrive_0.1.0_amd64.deb
 ```
 
 O APT instala as dependências nativas; as dependências Python já estão incluídas no pacote. Não é necessário instalar `pip` ou `watchdog` separadamente.
@@ -53,7 +53,7 @@ Cada instalação usa uma conta, autenticada pelo próprio usuário no navegador
 
 O projeto OAuth da distribuição oficial está **em produção**, conforme atualização do mantenedor em 2 de novembro de 2026. A autenticação não depende mais de adicionar cada conta à lista de testadores. O domínio `erservices.top` teve a propriedade verificada no Google Search Console, e o site público usa HTTPS obrigatório com certificado válido.
 
-Contas Google Workspace continuam sujeitas às políticas e à aprovação do administrador da organização. Quando a autorização precisar ser renovada, a fila permanece salva até a reconexão. Projetos OAuth próprios ainda em **Testing** seguem as restrições de testadores desse modo. O status OAuth em produção não altera a classificação alpha do aplicativo nem equivale, por si só, à conclusão de toda verificação de marca do Google.
+Contas Google Workspace continuam sujeitas às políticas e à aprovação do administrador da organização. Quando a autorização precisar ser renovada, a fila permanece salva até a reconexão. Projetos OAuth próprios ainda em **Testing** seguem as restrições de testadores desse modo. O status OAuth em produção é independente da versão do aplicativo e não equivale, por si só, à conclusão de toda verificação de marca do Google.
 
 Quem desenvolver ou redistribuir o aplicativo precisa configurar seu cliente OAuth Desktop e habilitar a Drive API. Consulte o [guia de integração com o Google Drive](docs/GUIA-GOOGLE-DRIVE.md). Não publique tokens, perfis de execução ou arquivos de credenciais pessoais.
 
@@ -115,6 +115,10 @@ python -m files2gdrive --state-dir /caminho/estado-drive desktop
 - Não há snapshot conjunto para bancos de dados em uso ou vários arquivos que precisem permanecer consistentes entre si.
 - A velocidade varia com tamanho, número de pastas, latência, conexão e limites do Drive. Não há garantia de tempo por arquivo.
 
+## Versionamento
+
+Usamos [versionamento semântico](https://semver.org/lang/pt-BR/) no formato `MAJOR.MINOR.PATCH`, com tags Git `vMAJOR.MINOR.PATCH`. A release pública inicial é `v0.1.0`, sem sufixo de pré-lançamento; isso não declara a API da série `0.x` estável. Correções previstas usam versões como `0.1.1`; novas funcionalidades usam versões como `0.2.0`. Mudanças são registradas no [histórico de versões](CHANGELOG.md); as instruções de atualização também aparecem nas notas de cada release. Artefatos já publicados não são substituídos por conteúdos diferentes sob a mesma versão.
+
 ## Testes
 
 No ambiente virtual:
@@ -123,7 +127,7 @@ No ambiente virtual:
 python -m unittest discover -s tests -v
 ```
 
-A suíte usa diretórios temporários e dublês da API, sem precisar autenticar uma conta Google. Abrange fila, retenção, filtros, reconexão, interface local, IDs após falhas e processamento concorrente.
+A suíte usa diretórios temporários e dublês da API, sem precisar autenticar uma conta Google. Abrange fila, retenção, filtros, reconexão, interface local, IDs após falhas e processamento concorrente. O mantenedor também confirmou o fluxo manual de desinstalação, remoção do estado de teste, nova autorização Google e reinstalação com backup em outro Ubuntu.
 
 ## Documentação
 

@@ -54,7 +54,7 @@ Ubuntu 24.04/GNOME:
 
 Para desenvolvimento, o ambiente virtual precisa ter acesso a PyGObject instalado pelo Ubuntu, por exemplo com `--system-site-packages`. O pacote declara as dependências nativas; a extensão AppIndicator também precisa estar carregada na sessão gráfica.
 
-Se GTK/bandeja estiver indisponível, o motor permanece independente. O helper tenta manter notificações, registra o problema e a interface continua acessível pelo lançador. Recuperação automática de todos os tipos de queda do motor/helper ainda precisa de refinamento antes da versão final.
+Se GTK/bandeja estiver indisponível, o motor permanece independente. O helper tenta manter notificações, registra o problema e a interface continua acessível pelo lançador. Recuperação automática de todos os tipos de queda do motor/helper continua sendo uma limitação conhecida e uma área de melhoria.
 
 ## Notificações
 

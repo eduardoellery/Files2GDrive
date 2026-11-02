@@ -44,7 +44,7 @@ def main(resources, executable, argv=None):
     arguments = list(sys.argv[1:] if argv is None else argv)
     if arguments == ['--version']:
         version = Path(resources) / 'VERSION'
-        print('Files2GDrive ' + (version.read_text().strip() if version.is_file() else '0.1.0~alpha3'))
+        print('Files2GDrive ' + (version.read_text().strip() if version.is_file() else '0.1.0'))
         return
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('--state-dir', type=Path)

@@ -1,19 +1,19 @@
-# Pacote Debian de teste
+# Instalador Debian — release pública 0.1.0
 
 ## Artefato gerado
 
-`dist/files2gdrive_0.1.0-alpha3_amd64.deb`
+`dist/files2gdrive_0.1.0_amd64.deb`
 
 Alvo: Ubuntu 24.04, arquitetura amd64, Python do sistema 3.12. Não é um pacote arm64 nem uma versão validada para outras versões do Ubuntu.
 
-A versão é alpha. Os testes automatizados e a execução do pacote extraído são complementados por instalação/reinstalação/remoção em raiz dpkg descartável. Ainda é necessário validar a instalação limpa com sessão gráfica e as políticas do domínio Google Workspace utilizado.
+A release pública é `0.1.0`, sem sufixo de pré-lançamento. O mantenedor confirmou o fluxo de desinstalação, limpeza do estado de teste, nova autorização e reinstalação com backup em outro Ubuntu. Testes automatizados, execução do pacote extraído e instalação/reinstalação/remoção em raiz dpkg descartável complementam essa validação. Políticas específicas de domínios Google Workspace continuam dependentes de validação no ambiente alvo.
 
 ## Instalar
 
 Fechar o Files2GDrive antes de instalar, atualizar ou remover. No diretório do arquivo:
 
 ```bash
-sudo apt install ./files2gdrive_0.1.0-alpha3_amd64.deb
+sudo apt install ./files2gdrive_0.1.0_amd64.deb
 ```
 
 O APT instala as dependências nativas necessárias. As dependências Python estão incluídas no pacote; não é necessário instalar pip ou montar um ambiente virtual na máquina destinatária.
@@ -26,7 +26,7 @@ Abrir **Files2GDrive** no menu de aplicativos ou executar:
 
 A primeira execução prepara um perfil novo em modo Google Drive, sem pastas monitoradas nem autorização Google. A identificação OAuth Desktop do aplicativo está integrada; clicar em **Conectar ao Google** e autorizar a própria conta. Não é necessário criar projeto ou fornecer JSON por destinatário.
 
-**O projeto OAuth da distribuição oficial está em produção** desde a atualização informada pelo mantenedor em 2 de novembro de 2026; não é mais necessário cadastrar cada conta como testadora. O domínio teve a propriedade verificada no Google Search Console e o site público usa HTTPS obrigatório com certificado válido. Contas Workspace continuam sujeitas às políticas da organização. Quem construir uma distribuição com cliente OAuth próprio precisa configurar e publicar esse projeto separadamente; em Testing, continuam valendo suas restrições de contas testadoras. O aplicativo permanece alpha.
+**O projeto OAuth da distribuição oficial está em produção** desde a atualização informada pelo mantenedor em 2 de novembro de 2026; não é mais necessário cadastrar cada conta como testadora. O domínio teve a propriedade verificada no Google Search Console e o site público usa HTTPS obrigatório com certificado válido. Contas Workspace continuam sujeitas às políticas da organização. Quem construir uma distribuição com cliente OAuth próprio precisa configurar e publicar esse projeto separadamente; em Testing, continuam valendo suas restrições de contas testadoras. A versão pública atual do aplicativo é `0.1.0`.
 
 Estado por usuário: `$XDG_STATE_HOME/files2gdrive` quando absoluto; caso contrário, `~/.local/state/files2gdrive`. Tokens continuam no Secret Service/cofre do Ubuntu.
 
@@ -66,6 +66,38 @@ sudo apt purge files2gdrive
 
 Remoção/purge não apagam perfil pessoal, tokens no cofre nem arquivos no Drive. O pacote não inicia processos como root nem executa scripts de instalação/remoção em diretórios pessoais.
 
+## Recomeçar com um perfil novo para teste
+
+O mantenedor validou o fluxo de desinstalação, remoção do estado de teste, nova autorização e reinstalação com backup em outro Ubuntu. A remoção normal preserva os dados; a limpeza para repetir a configuração inicial é uma ação separada e opcional.
+
+1. No Ubuntu de testes, saia do aplicativo e aguarde o motor terminar as operações em andamento.
+2. **Antes de desinstalar ou mover o perfil**, remova a credencial dessa instalação do cofre:
+
+   ```bash
+   /usr/bin/files2gdrive logout
+   ```
+
+3. Remova o pacote e sua configuração global:
+
+   ```bash
+   sudo apt purge files2gdrive
+   ```
+
+4. Para iniciar sem a configuração anterior, renomeie o perfil. No caminho padrão:
+
+   ```bash
+   mv ~/.local/state/files2gdrive \
+      ~/.local/state/files2gdrive-teste-anterior
+   ```
+
+   Use um nome de destino ainda inexistente. Se configurou `XDG_STATE_HOME` absoluto ou `--state-dir`, use o caminho correspondente. Não mova nem apague as pastas originais escolhidas para backup. O perfil arquivado não deve ser reutilizado neste teste de instalação limpa.
+
+5. Gerencie manualmente os backups do teste no Google Drive. Envie à lixeira somente a pasta desse computador/teste; não exclua backups de outras instalações. Não é necessário esvaziar a lixeira para repetir a instalação.
+6. Se quiser repetir também a concessão de acesso no Google, remova o vínculo nas [conexões da Conta Google](https://myaccount.google.com/connections). Isso é opcional: `logout` já remove a credencial local. A revogação no Google pode invalidar a autorização do mesmo aplicativo em **outras instalações que usam a mesma conta**, não apenas no Ubuntu de testes. Revogar não apaga arquivos do Drive.
+7. Reinstale o `.deb`, abra o aplicativo e confirme o pedido de login e a seleção inicialmente vazia. Configure um pequeno backup e teste envio, alteração, exclusão e reinicialização.
+
+A atualização do mesmo projeto OAuth de Testing para produção é uma configuração do Google; não exige substituir o JSON OAuth integrado nem limpar perfis de quem apenas atualiza o aplicativo. O pacote `0.1.0` mantém o mesmo cliente da distribuição oficial. Não refaça a limpeza ao atualizar uma instalação que deve continuar seu backup existente.
+
 ## Verificar integridade
 
 No diretório dos artefatos:
@@ -84,7 +116,7 @@ O builder recebe dependências previamente reunidas e um cliente Desktop válido
 .venv/bin/python scripts/build_deb.py \
   --vendor-dir /caminho/vendor \
   --oauth-client /caminho/cliente-desktop.json \
-  --output-dir dist --version '0.1.0~alpha3'
+  --output-dir dist --version '0.1.0'
 ```
 
 Versões e hashes das 44 dependências estão em `packaging/requirements-release.lock`. Para preparar o vendor com pip em um ambiente Python de construção:
@@ -104,10 +136,10 @@ A construção usa uma whitelist de módulos/assets e rejeita tokens no JSON OAu
 - Descoberta estática do SDK Google, subprocesso do motor via lançador e comandos pausa/retomada/saída validados, sem login ou upload.
 - Simulação APT aceitou o pacote e as dependências no ambiente atual.
 - Instalação, reinstalação, remoção e purge passaram em raiz/banco dpkg temporários. Dependências foram forçadas apenas nesse banco vazio; dependências reais foram verificadas separadamente. Um arquivo representando estado pessoal sobreviveu intacto.
-- O pacote não foi instalado no banco dpkg do Ubuntu do usuário. Essa validação isolada não substitui teste numa VM limpa com sessão gráfica.
+- As validações automatizadas usam raiz dpkg isolada. Separadamente, o mantenedor confirmou a instalação e o fluxo de recomeço com autenticação e backup em outro Ubuntu com sessão gráfica.
 
-O alpha3 inclui o seletor de pastas com exceções por subdiretório, indicador de autenticação, preparação de diretórios em lote e até quatro uploads simultâneos. Arquivos de até 5 MiB usam upload multipart; maiores usam upload retomável. O esquema atual do banco é 4; não execute o alpha1 sobre um perfil já migrado.
+A versão `0.1.0` inclui o seletor de pastas com exceções por subdiretório, indicador de autenticação, preparação de diretórios em lote e até quatro uploads simultâneos. Arquivos de até 5 MiB usam upload multipart; maiores usam upload retomável. O esquema atual do banco é 4; não execute o alpha1 sobre um perfil já migrado.
 
 A aplicação usa a licença MIT, cujo texto acompanha o pacote em `/usr/share/doc/files2gdrive/copyright`. As dependências mantêm suas próprias licenças, incluídas no diretório privado do aplicativo.
 
-Na release GitHub, o nome do instalador usa `0.1.0-alpha3`; a versão Debian interna permanece `0.1.0~alpha3`. O script de build local gera o nome com `~`.
+A versão Debian interna e a do instalador público são `0.1.0`, com arquivo `files2gdrive_0.1.0_amd64.deb` e tag Git `v0.1.0`. Essa versão tem precedência sobre a pré-release anterior `0.1.0~alpha3`, permitindo atualização via APT. A pré-release permanece disponível no histórico, com seus artefatos originais.
