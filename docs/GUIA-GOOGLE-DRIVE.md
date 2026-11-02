@@ -15,9 +15,23 @@
 - Estado local vinculado a `about.user.permissionId`. Trocar a conta não reutiliza silenciosamente os IDs da conta anterior.
 - Simulador permanece padrão; não converter automaticamente estado de simulação com arquivos observados para backend real.
 
-O código tem testes com dublês da API e validação real do login, envio (incluindo múltiplos blocos), edição, renomeação, retenção, reaparecimento e pausa. Não considerá-lo pronto para backup de produção: recuperação, falhas de rede e escala ainda precisam de validação.
+O código tem testes com dublês da API e validação real do login, envio (incluindo múltiplos blocos), edição, renomeação, retenção, reaparecimento e pausa. O aplicativo permanece alpha: recuperação, falhas de rede e escala ainda exigem avaliação contínua, independentemente do status de produção do OAuth.
 
-## Preparação pelo mantenedor
+## Estado da distribuição oficial
+
+Atualização do mantenedor em 2 de novembro de 2026:
+
+- Projeto OAuth oficial em produção; destinatários não precisam ser incluídos individualmente como testadores.
+- Propriedade de `erservices.top` verificada no Google Search Console.
+- Certificado HTTPS emitido pelo GitHub Pages e HTTPS obrigatório habilitado.
+- Página inicial: https://files2gdrive.erservices.top/
+- Política de Privacidade: https://files2gdrive.erservices.top/privacidade/
+- Termos de Uso: https://files2gdrive.erservices.top/termos/
+- Domínio autorizado no GCP: `erservices.top`.
+
+Esse status não elimina políticas corporativas do Workspace, não muda a condição alpha do software e não afirma aprovação de verificações de marca que não tenham sido confirmadas pelo Google. A preparação abaixo continua relevante para desenvolvimento e distribuições com cliente OAuth próprio.
+
+## Preparação de um projeto próprio pelo mantenedor
 
 1. Criar projeto Google Cloud de desenvolvimento e habilitar Google Drive API.
 2. Configurar Google Auth Platform, público externo e dados de contato/consentimento.

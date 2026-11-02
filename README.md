@@ -51,7 +51,9 @@ Para atualizar o pacote, saia pelo menu da bandeja antes de instalar a nova vers
 
 Cada instalação usa uma conta, autenticada pelo próprio usuário no navegador. O pacote do distribuidor pode incluir a identificação OAuth Desktop do aplicativo; ele não inclui autorização, senha ou tokens de usuários. Os tokens são guardados no cofre Secret Service da sessão Ubuntu.
 
-Se o projeto OAuth do distribuidor estiver em **Testing**, somente contas autorizadas como testadoras conseguem entrar. Publicar o código não remove essa restrição. Contas Google Workspace também podem depender das políticas e da aprovação do administrador da organização. Quando a autorização precisar ser renovada, a fila permanece salva até a reconexão.
+O projeto OAuth da distribuição oficial está **em produção**, conforme atualização do mantenedor em 2 de novembro de 2026. A autenticação não depende mais de adicionar cada conta à lista de testadores. O domínio `erservices.top` teve a propriedade verificada no Google Search Console, e o site público usa HTTPS obrigatório com certificado válido.
+
+Contas Google Workspace continuam sujeitas às políticas e à aprovação do administrador da organização. Quando a autorização precisar ser renovada, a fila permanece salva até a reconexão. Projetos OAuth próprios ainda em **Testing** seguem as restrições de testadores desse modo. O status OAuth em produção não altera a classificação alpha do aplicativo nem equivale, por si só, à conclusão de toda verificação de marca do Google.
 
 Quem desenvolver ou redistribuir o aplicativo precisa configurar seu cliente OAuth Desktop e habilitar a Drive API. Consulte o [guia de integração com o Google Drive](docs/GUIA-GOOGLE-DRIVE.md). Não publique tokens, perfis de execução ou arquivos de credenciais pessoais.
 

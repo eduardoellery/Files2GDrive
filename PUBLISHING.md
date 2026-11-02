@@ -24,8 +24,16 @@ fontes. Uma revisão de privacidade deve ser repetida a cada nova publicação.
 
 O instalador de teste é um artefato separado. Ele inclui a identificação OAuth
 Desktop do aplicativo, que não é uma autorização de usuário; nunca inclui tokens
-de acesso ou renovação. Distribuir esse instalador não libera novas contas no
-projeto Google quando ele está em modo Testing. Quem mantiver uma distribuição
-própria deve preparar seu próprio cliente OAuth conforme o guia do projeto.
+de acesso ou renovação. O projeto OAuth da distribuição oficial está em produção,
+com domínio verificado e site HTTPS, conforme atualização de 2 de novembro de 2026.
+Quem mantiver uma distribuição própria deve preparar e publicar seu próprio cliente
+OAuth conforme o guia; se esse projeto estiver em Testing, suas contas continuam
+sujeitas à lista de testadores.
 
 Nenhum script deste projeto cria repositórios, faz push ou publica releases.
+
+## Fluxo de alterações
+
+Toda atualização segue: branch de trabalho → commit → push da branch → pull request para `main` → revisão e verificações pertinentes → merge. Não enviar alterações diretamente para `main`.
+
+Faça merge somente dentro do escopo autorizado pelo mantenedor e respeite proteções e verificações do repositório; não contorne bloqueios. Não é obrigatório gerar instalador em mudanças apenas de documentação. Releases e seus anexos continuam artefatos separados.
