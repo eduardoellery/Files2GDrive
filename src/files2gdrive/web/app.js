@@ -11,9 +11,9 @@ function clearError() {$('error').classList.add('hidden');}
 function notify(message) {$('notice').textContent = message; $('notice').classList.remove('hidden'); window.setTimeout(() => $('notice').classList.add('hidden'), 8000);}
 function empty(title, subtitle, symbol = '✓') {const box = element('div', undefined, 'empty'); box.append(element('span', symbol, 'empty-symbol'), element('strong', title)); if (subtitle) box.append(element('p', subtitle)); return box;}
 async function api(path, method = 'GET', body) {
-  const headers = {'Accept': 'application/json'};
+  const headers = {'Accept': 'application/json', 'Authorization': 'Bearer ' + (sessionStorage.getItem('files2gdrive.session') || '')};
   if (method !== 'GET') {headers['X-CSRF-Token'] = state.csrf; if (body !== undefined) headers['Content-Type'] = 'application/json';}
-  const response = await fetch(path, {method, credentials: 'same-origin', headers, body: body === undefined ? undefined : JSON.stringify(body)});
+  const response = await fetch(path, {method, credentials: 'omit', headers, body: body === undefined ? undefined : JSON.stringify(body)});
   let data; try {data = await response.json();} catch (_) {throw new Error('Não foi possível interpretar a resposta do aplicativo.');}
   if (!response.ok) {const detail = data.detail ?? data.error ?? 'Não foi possível concluir a operação.'; throw new Error(typeof detail === 'string' ? detail : 'Verifique os campos e tente novamente.');}
   return data;

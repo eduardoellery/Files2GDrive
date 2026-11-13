@@ -4,21 +4,22 @@ import threading
 import unittest
 from unittest.mock import Mock, patch
 
-from files2gdrive.tray import TrayActions, _Dispatcher, menu_state, run_tray, tray_lock, validate_launch_url
+from files2gdrive.tray import (TrayActions, _Dispatcher, menu_state, run_tray, tray_lock,
+                               validate_launch_file)
 
 
 class TrayTests(unittest.TestCase):
-    def test_only_expected_loopback_launch_urls_are_accepted(self):
-        valid = 'http://127.0.0.1:8766/launch?token=' + 'a' * 32
-        self.assertEqual(validate_launch_url(valid), valid)
-        for invalid in ('https://127.0.0.1:8766/launch?token=' + 'a'*32,
-                        'http://localhost:8766/launch?token=' + 'a'*32,
-                        'http://evil.example:8766/launch?token=' + 'a'*32,
-                        'http://user@127.0.0.1:8766/launch?token=' + 'a'*32,
-                        'http://127.0.0.1:8766/launch?token=short',
-                        valid + '&token=' + 'b'*32, valid + '#fragment',
-                        'file:///etc/passwd', valid.replace('/launch', '/other')):
-            with self.assertRaises(ValueError): validate_launch_url(invalid)
+    def test_only_private_state_bootstrap_file_is_accepted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            state = Path(directory); state.chmod(0o700)
+            launch = state / 'web-launch.html'; launch.write_text('<form></form>'); launch.chmod(0o600)
+            valid = launch.as_uri()
+            self.assertEqual(validate_launch_file(valid, state), valid)
+            for invalid in ('https://127.0.0.1:8766/launch?token=' + 'a'*32,
+                            'file:///etc/passwd', valid + '#fragment', valid + '?token=x'):
+                with self.assertRaises(ValueError): validate_launch_file(invalid, state)
+            launch.chmod(0o644)
+            with self.assertRaises(ValueError): validate_launch_file(valid, state)
 
     def test_open_validates_before_invoking_browser(self):
         opener = Mock(return_value=True)
@@ -26,8 +27,13 @@ class TrayTests(unittest.TestCase):
         actions = TrayActions(client, opener=opener)
         with self.assertRaises(ValueError): actions.perform('open')
         opener.assert_not_called()
-        client.return_value = {'url': 'http://127.0.0.1:8766/launch?token=' + 'a'*32}
-        actions.perform('open'); opener.assert_called_once_with(client.return_value['url'])
+        with tempfile.TemporaryDirectory() as directory:
+            state = Path(directory); state.chmod(0o700)
+            launch = state / 'web-launch.html'; launch.write_text('<form></form>'); launch.chmod(0o600)
+            client.return_value = {'url': launch.as_uri()}
+            actions = TrayActions(client, opener=opener,
+                                  launch_validator=lambda value: validate_launch_file(value, state))
+            actions.perform('open'); opener.assert_called_once_with(launch.as_uri())
 
     def test_quit_only_exits_after_acknowledgment(self):
         quit_callback = Mock(); client = Mock(side_effect=RuntimeError('offline'))

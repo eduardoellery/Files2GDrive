@@ -2,6 +2,15 @@
 
 O projeto usa [versionamento semântico](https://semver.org/lang/pt-BR/), com tags `vMAJOR.MINOR.PATCH`. A série `0.x` representa a evolução inicial e não promete uma API estável. Os artefatos de uma versão publicada não são substituídos por conteúdos diferentes.
 
+## 0.1.1 — 2026-11-13
+
+Versão de correção de segurança para Ubuntu 24.04 LTS amd64.
+
+- Remove o token de abertura da linha de comando do navegador; o bootstrap usa arquivo privado 0600, POST de uso único e validade de 60 segundos.
+- Revoga a sessão ligada a um token se o token consumido for reapresentado.
+- Substitui autenticação por cookie por bearer por sessão de navegador, enviado no cabeçalho `Authorization` em todas as rotas `/api/` e expirado após 12 horas sem atividade.
+- Remove o cookie legado durante o bootstrap e mantém proteção de origem e CSRF nas alterações.
+
 ## 0.1.0 — 2026-11-02
 
 Primeira release pública sem sufixo de pré-lançamento, após validação do fluxo de instalação limpa, nova autorização Google e backup em outro Ubuntu.

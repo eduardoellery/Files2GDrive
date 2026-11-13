@@ -138,7 +138,7 @@ def _copy_vendor(source: Path, destination: Path):
         raise ValueError('Vendor tree is empty')
 
 
-def build_package(vendor_dir, oauth_client, output_dir=None, version='0.1.0', architecture='amd64', *, source_root=None):
+def build_package(vendor_dir, oauth_client, output_dir=None, version='0.1.1', architecture='amd64', *, source_root=None):
     if not isinstance(version, str) or not VERSION.fullmatch(version) or version.endswith('-'):
         raise ValueError('Invalid Debian package version')
     if architecture != 'amd64':
@@ -221,7 +221,7 @@ def main(argv=None):
     parser.add_argument('--vendor-dir', type=Path, required=True)
     parser.add_argument('--oauth-client', type=Path, required=True)
     parser.add_argument('--output-dir', type=Path, default=REPOSITORY / 'dist')
-    parser.add_argument('--version', default='0.1.0')
+    parser.add_argument('--version', default='0.1.1')
     parser.add_argument('--architecture', default='amd64')
     args = parser.parse_args(argv)
     try:

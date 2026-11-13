@@ -10,41 +10,44 @@ import hashlib
 import logging
 import os
 from pathlib import Path
-import re
 import stat
 import threading
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import unquote, urlsplit
 import webbrowser
 
 log = logging.getLogger('files2gdrive')
 
 
-def validate_launch_url(url):
-    """Accept only an ephemeral launch capability from our loopback server."""
-    if not isinstance(url, str) or len(url) > 512 or any(character.isspace() for character in url):
-        raise ValueError('O motor retornou um endereço de configuração inválido')
+def _reject_unvalidated_launch(_value):
+    raise ValueError('O caminho privado de configuração não foi validado')
+
+
+def validate_launch_file(url, state_directory):
+    """Accept only the private, token-bearing bootstrap file in this state."""
+    if not isinstance(url, str) or len(url) > 4096 or any(character.isspace() for character in url):
+        raise ValueError('O motor retornou um arquivo de configuração inválido')
     try:
         parsed = urlsplit(url)
-        port = parsed.port
-    except ValueError:
-        raise ValueError('O motor retornou um endereço de configuração inválido') from None
-    if (parsed.scheme != 'http' or parsed.hostname != '127.0.0.1'
-            or parsed.username is not None or parsed.password is not None
-            or port is None or not 1 <= port <= 65535 or parsed.path != '/launch'
-            or parsed.fragment):
-        raise ValueError('O motor retornou um endereço de configuração inválido')
-    query = parse_qs(parsed.query, keep_blank_values=True, strict_parsing=True)
-    if set(query) != {'token'} or len(query['token']) != 1 or not re.fullmatch(r'[A-Za-z0-9_-]{24,128}', query['token'][0]):
-        raise ValueError('O motor retornou um endereço de configuração inválido')
+        path = Path(unquote(parsed.path))
+        expected = Path(state_directory).resolve() / 'web-launch.html'
+        info = path.lstat()
+    except (OSError, ValueError):
+        raise ValueError('O motor retornou um arquivo de configuração inválido') from None
+    if (parsed.scheme != 'file' or parsed.netloc or parsed.query or parsed.fragment
+            or path != expected or expected.as_uri() != url
+            or not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid()
+            or stat.S_IMODE(info.st_mode) & 0o077):
+        raise ValueError('O motor retornou um arquivo de configuração inválido')
     return url
 
 
 class TrayActions:
     """UI-independent action model, suitable for tests without GTK installed."""
-    def __init__(self, client, opener=webbrowser.open, exit_callback=None):
+    def __init__(self, client, opener=webbrowser.open, exit_callback=None, launch_validator=None):
         self.client = client
         self.opener = opener
         self.exit_callback = exit_callback or (lambda: None)
+        self.launch_validator = launch_validator or _reject_unvalidated_launch
 
     def perform(self, action):
         if action not in ('status', 'pause', 'resume', 'open', 'quit'):
@@ -53,7 +56,7 @@ class TrayActions:
         if not isinstance(result, dict):
             raise ValueError('O motor retornou uma resposta inválida')
         if action == 'open':
-            url = validate_launch_url(result.get('url'))
+            url = self.launch_validator(result.get('url'))
             if self.opener(url) is False:
                 raise RuntimeError('Não foi possível abrir o navegador padrão')
         elif action == 'quit':
@@ -233,7 +236,8 @@ def run_tray(state_directory, client=None, notify=None):
             items['resume'].set_sensitive(state['can_resume'])
             return False
 
-        actions = TrayActions(client, exit_callback=lambda: GLib.idle_add(Gtk.main_quit))
+        actions = TrayActions(client, exit_callback=lambda: GLib.idle_add(Gtk.main_quit),
+                              launch_validator=lambda value: validate_launch_file(value, state_directory))
         dispatcher = _Dispatcher(actions, GLib.idle_add, finished, notify)
         for action, item in items.items():
             item.connect('activate', lambda widget, action=action: dispatcher.submit(action))
