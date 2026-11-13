@@ -47,7 +47,7 @@ Faça merge somente dentro do escopo autorizado pelo mantenedor e respeite prote
 - Tag Git: `vMAJOR.MINOR.PATCH`; primeira release pública sem sufixo: `v0.1.0`; correção atual: `v0.1.1`.
 - Pacote Debian e versão interna atuais: `files2gdrive_0.1.1_amd64.deb` e `0.1.1`.
 - Fontes públicos atuais: `files2gdrive-source-0.1.1.tar.gz`; integridade: `SHA256SUMS`.
-- Correções posteriores podem usar `0.1.1`; novas funcionalidades, `0.2.0`. A série `0.x` é de evolução inicial e não promete estabilidade da API antes de `1.0.0`.
+- Correções posteriores podem usar `0.1.2`; novas funcionalidades, `0.2.0`. A série `0.x` é de evolução inicial e não promete estabilidade da API antes de `1.0.0`.
 - Publicar a versão normal como release do GitHub, sem o indicador de pré-release. Reservar sufixos como `-rc.1` para pré-lançamentos e representar versões Debian anteriores à final com `~rc1`.
 - Gerar os artefatos a partir do commit mesclado e apontar a tag para esse mesmo commit. Não alterar anexos já publicados para mudar o conteúdo de uma versão existente; criar nova versão para qualquer correção.
 
