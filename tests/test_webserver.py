@@ -1,10 +1,11 @@
 import json
+import re
 import unittest
 from unittest.mock import Mock
 
 try:
     from fastapi.testclient import TestClient
-    from files2gdrive.webserver import create_app, COOKIE, MAX_BODY
+    from files2gdrive.webserver import create_app, MAX_BODY
 except ImportError:
     TestClient = None
 
@@ -23,33 +24,62 @@ class WebServerTests(unittest.TestCase):
         self.client.close()
 
     def authenticate(self):
-        response = self.client.get('/launch', params={'token': self.app.state.launch_token}, follow_redirects=False)
-        self.assertEqual(response.status_code, 303)
-        session = self.client.get('/api/session')
+        token = self.app.state.launch_token
+        response = self.client.post('/launch', data={'token': token}, headers={'Origin': 'null'}, follow_redirects=False)
+        self.assertEqual(response.status_code, 200)
+        match = re.search(r'name="files2gdrive-session" content="([A-Za-z0-9_-]+)"', response.text)
+        self.assertIsNotNone(match)
+        self.session_token = match.group(1)
+        session = self.client.get('/api/session', headers=self.headers())
         self.csrf = session.json()['csrf_token']
         return response
 
     def headers(self):
-        return {'Origin': self.origin, 'X-CSRF-Token': self.csrf}
+        result = {'Authorization': 'Bearer ' + getattr(self, 'session_token', '')}
+        if hasattr(self, 'csrf'):
+            result.update({'Origin': self.origin, 'X-CSRF-Token': self.csrf})
+        return result
 
-    def test_no_status_or_session_without_bootstrap_cookie(self):
-        for path in ('/', '/api/status', '/api/session', '/app.js'):
+    def test_api_requires_bearer_even_if_legacy_cookie_is_present(self):
+        for path in ('/api/status', '/api/session'):
             response = self.client.get(path)
             self.assertEqual(response.status_code, 401)
             self.assertEqual(response.headers['cache-control'], 'no-store')
+        response = self.client.get('/api/status', headers={'Cookie': 'files2gdrive_session=legacy-secret'})
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(self.client.get('/').status_code, 200)
         self.controller.snapshot.assert_not_called()
 
-    def test_launch_is_single_use_and_cookie_is_private(self):
+    def test_launch_is_single_use_and_bootstraps_a_bearer_session(self):
         token = self.app.state.launch_token
         response = self.authenticate()
-        cookie = response.headers['set-cookie'].lower()
-        self.assertIn('httponly', cookie)
-        self.assertIn('samesite=strict', cookie)
-        self.assertNotIn('domain=', cookie)
-        self.assertNotIn(token, response.headers.get('location', ''))
-        self.assertEqual(self.client.get('/launch', params={'token': token}).status_code, 401)
-        self.assertEqual(self.client.get('/api/status').status_code, 200)
-        self.assertEqual(self.client.get('/api/status').json()['paused'], True)
+        self.assertNotIn(token, response.text)
+        self.assertIn('max-age=0', response.headers['set-cookie'].lower())
+        self.assertEqual(self.client.get('/launch', params={'token': token}).status_code, 405)
+        replay = self.client.post('/launch', data={'token': token}, headers={'Origin': 'null'})
+        self.assertEqual(replay.status_code, 401)
+        self.assertIn('sessão foi revogada', replay.json()['detail'])
+        status = self.client.get('/api/status', headers=self.headers())
+        self.assertEqual(status.status_code, 401)
+
+    def test_bootstrap_token_is_one_use_and_sessions_are_distinct(self):
+        self.authenticate()
+        first = self.session_token
+        second_token = self.app.state.issue_launch_token()
+        response = self.client.post('/launch', data={'token': second_token}, headers={'Origin': 'null'})
+        second = re.search(r'name="files2gdrive-session" content="([A-Za-z0-9_-]+)"', response.text).group(1)
+        self.assertNotEqual(first, second)
+        self.assertIn(first, self.app.state.sessions)
+        self.assertIn(second, self.app.state.sessions)
+
+    def test_expired_launch_token_and_expired_session_are_rejected(self):
+        self.app.state.launch_token_expires_at = 0
+        self.assertEqual(self.client.post('/launch', data={'token': self.app.state.launch_token},
+                                          headers={'Origin': 'null'}).status_code, 401)
+        self.app.state.issue_launch_token()
+        self.authenticate()
+        self.app.state.sessions[self.session_token]['expires_at'] = 0
+        self.assertEqual(self.client.get('/api/status', headers=self.headers()).status_code, 401)
 
     def test_host_origin_and_remote_client_are_rejected(self):
         self.authenticate()
@@ -58,15 +88,18 @@ class WebServerTests(unittest.TestCase):
             self.assertEqual(self.client.get('/api/status', headers=headers).status_code, 403)
         remote = TestClient(self.app, base_url=self.origin, client=('192.0.2.1', 45678))
         try:
-            self.assertEqual(remote.get('/launch', params={'token': self.app.state.issue_launch_token()}).status_code, 403)
+            self.assertEqual(remote.post('/launch', data={'token': self.app.state.issue_launch_token()},
+                                         headers={'Origin': 'null'}).status_code, 403)
         finally:
             remote.close()
         self.controller.snapshot.assert_not_called()
 
     def test_mutations_require_both_exact_origin_and_csrf(self):
         self.authenticate()
+        authorization = {'Authorization': 'Bearer ' + self.session_token}
         for headers in ({}, {'Origin': self.origin}, {'X-CSRF-Token': self.csrf},
                         {'Origin': self.origin, 'X-CSRF-Token': 'wrong'}):
+            headers = dict(authorization, **headers)
             response = self.client.post('/api/control', json={'action': 'resume'}, headers=headers)
             self.assertEqual(response.status_code, 403)
         self.controller.call.assert_not_called()
@@ -111,7 +144,8 @@ class WebServerTests(unittest.TestCase):
     def test_logs_export_is_jsonl_and_filtered(self):
         self.authenticate()
         self.controller.call.return_value = {'entries': [{'message': '<unsafe>', 'level': 'WARNING'}]}
-        response = self.client.get('/api/logs/export?level=WARNING&root_id=root&since=2026-11-01')
+        response = self.client.get('/api/logs/export?level=WARNING&root_id=root&since=2026-11-01',
+                                   headers=self.headers())
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.text)['message'], '<unsafe>')
         self.assertIn('attachment', response.headers['content-disposition'])
@@ -138,17 +172,15 @@ class WebServerTests(unittest.TestCase):
     def test_only_fixed_assets_are_served_to_authenticated_session(self):
         self.authenticate()
         for path, content in (('/', 'text/html'), ('/static/app.js', 'text/javascript'),
-                              ('/static/app.css', 'text/css')):
+                              ('/static/bootstrap.js', 'text/javascript'), ('/static/app.css', 'text/css')):
             response = self.client.get(path)
             self.assertEqual(response.status_code, 200)
             self.assertIn(content, response.headers['content-type'])
             self.assertEqual(response.headers['cache-control'], 'no-store')
         self.assertIn('Files2GDrive', self.client.get('/').text)
 
-    def test_cookie_tampering_and_duplicate_authority_are_rejected(self):
+    def test_duplicate_authority_and_cross_origin_mutations_are_rejected(self):
         self.authenticate()
-        response = self.client.get('/api/status', headers={'Cookie': COOKIE + '=forged'})
-        self.assertEqual(response.status_code, 401)
         response = self.client.get('/api/status', headers=[('Host', '127.0.0.1:8765'), ('Host', 'evil.example')])
         self.assertEqual(response.status_code, 403)
         headers = list(self.headers().items()) + [('Origin', 'http://evil.example')]
@@ -160,9 +192,10 @@ class WebServerTests(unittest.TestCase):
         token = self.app.state.issue_launch_token()
         other = TestClient(self.app, base_url=self.origin, client=('127.0.0.1', 45679))
         try:
-            response = other.get('/launch', params={'token': token}, follow_redirects=False)
-            self.assertEqual(response.status_code, 303)
-            self.assertEqual(other.get('/api/session').status_code, 200)
+            response = other.post('/launch', data={'token': token}, headers={'Origin': 'null'}, follow_redirects=False)
+            self.assertEqual(response.status_code, 200)
+            session_token = re.search(r'name="files2gdrive-session" content="([A-Za-z0-9_-]+)"', response.text).group(1)
+            self.assertEqual(other.get('/api/session', headers={'Authorization': 'Bearer ' + session_token}).status_code, 200)
         finally:
             other.close()
 

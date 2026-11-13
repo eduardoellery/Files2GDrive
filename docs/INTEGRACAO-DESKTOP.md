@@ -12,7 +12,7 @@ O lançador reutiliza o motor existente ou inicia um novo, abre a configuração
 
 Menu da bandeja:
 
-- **Configuração:** gera um novo link local autenticado e abre o navegador padrão.
+- **Configuração:** gera um bootstrap HTML privado, com token curto de uso único, e abre o navegador padrão sem colocar o token na linha de comando.
 - **Pausar backup:** preserva fila/prazos e a pausa persiste entre sessões.
 - **Retomar backup:** retoma o trabalho permitido; não ignora uma conferência de reconexão pendente.
 - **Sair:** solicita encerramento do motor e fecha o ícone após confirmação. Não há supervisor que reinicie imediatamente o motor após essa ação. Reabrir o aplicativo ou entrar na próxima sessão inicia novamente.
@@ -64,7 +64,7 @@ Falta de espaço é identificada pelo código `storageQuotaExceeded`; limites te
 
 ## Segurança e isolamento
 
-A bandeja não abre o SQLite e não recebe tokens Google. Ela usa um socket Unix privado no estado, com permissões 0600, diretório 0700 e verificação do UID do cliente/servidor. Somente comandos status, pause, resume, open e quit são aceitos, com mensagens limitadas. Abertura do navegador só aceita a URL loopback produzida pelo próprio motor.
+A bandeja não abre o SQLite e não recebe tokens Google. Ela usa um socket Unix privado no estado, com permissões 0600, diretório 0700 e verificação do UID do cliente/servidor. Somente comandos status, pause, resume, open e quit são aceitos, com mensagens limitadas. Para abrir o navegador, o motor grava um bootstrap HTML privado no estado e a bandeja valida seu caminho, proprietário e permissões antes de abri-lo.
 
 Um lock impede duplicação do helper; outro protege o motor. Um processo antigo usando o estado sem o canal novo não é encerrado automaticamente pelo lançador: é necessário fechá-lo antes de iniciar a versão nova.
 

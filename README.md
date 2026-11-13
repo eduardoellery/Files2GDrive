@@ -6,7 +6,7 @@ Backup contínuo de arquivos locais do Ubuntu para o Google Drive, com configura
 
 ![Visão geral do Files2GDrive, com Google Drive autenticado e nenhuma operação pendente](docs/images/visao-geral.png)
 
-**Release pública v0.1.0 para Ubuntu 24.04 LTS, amd64 e Python 3.12.** Esta é a primeira versão sem sufixo de pré-lançamento. A série `0.x` ainda representa a evolução inicial do projeto; consulte as limitações e mantenha outras cópias de arquivos importantes.
+**Release pública v0.1.1 para Ubuntu 24.04 LTS, amd64 e Python 3.12.** Esta é uma versão de correção da série inicial `0.x`, que ainda representa a evolução do projeto; consulte as limitações e mantenha outras cópias de arquivos importantes.
 
 ## Funcionalidades
 
@@ -23,10 +23,10 @@ A sincronização é **Ubuntu → Google Drive**. Alterações no Drive não sã
 
 ## Instalar
 
-Baixe o pacote `.deb` na [release v0.1.0](https://github.com/eduardoellery/Files2GDrive/releases/tag/v0.1.0) e execute no diretório do arquivo:
+Baixe o pacote `.deb` na [release v0.1.1](https://github.com/eduardoellery/Files2GDrive/releases/tag/v0.1.1) e execute no diretório do arquivo:
 
 ```bash
-sudo apt install ./files2gdrive_0.1.0_amd64.deb
+sudo apt install ./files2gdrive_0.1.1_amd64.deb
 ```
 
 O APT instala as dependências nativas; as dependências Python já estão incluídas no pacote. Não é necessário instalar `pip` ou `watchdog` separadamente.
@@ -145,7 +145,7 @@ backups privados não fazem parte do código-fonte nem dos anexos das releases.
 
 ## Versionamento
 
-Usamos [versionamento semântico](https://semver.org/lang/pt-BR/) no formato `MAJOR.MINOR.PATCH`, com tags Git `vMAJOR.MINOR.PATCH`. A release pública inicial é `v0.1.0`, sem sufixo de pré-lançamento; isso não declara a API da série `0.x` estável. Correções previstas usam versões como `0.1.1`; novas funcionalidades usam versões como `0.2.0`. Mudanças são registradas no [histórico de versões](CHANGELOG.md); as instruções de atualização também aparecem nas notas de cada release. Artefatos já publicados não são substituídos por conteúdos diferentes sob a mesma versão.
+Usamos [versionamento semântico](https://semver.org/lang/pt-BR/) no formato `MAJOR.MINOR.PATCH`, com tags Git `vMAJOR.MINOR.PATCH`. A release pública inicial foi `v0.1.0`; a correção atual está em `v0.1.1`. Isso não declara a API da série `0.x` estável. Novas funcionalidades usam versões como `0.2.0`. Mudanças são registradas no [histórico de versões](CHANGELOG.md); as instruções de atualização também aparecem nas notas de cada release. Artefatos já publicados não são substituídos por conteúdos diferentes sob a mesma versão.
 
 ## Testes
 

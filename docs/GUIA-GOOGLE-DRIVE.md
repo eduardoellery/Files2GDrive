@@ -15,7 +15,7 @@
 - Estado local vinculado a `about.user.permissionId`. Trocar a conta não reutiliza silenciosamente os IDs da conta anterior.
 - Simulador permanece padrão; não converter automaticamente estado de simulação com arquivos observados para backend real.
 
-O código tem testes com dublês da API e validação real do login, envio (incluindo múltiplos blocos), edição, renomeação, retenção, reaparecimento e pausa. A release pública atual é `0.1.0`. O mantenedor confirmou o fluxo manual de desinstalação, limpeza do estado de teste, nova autorização e reinstalação com backup em outro Ubuntu; recuperação, falhas de rede e escala continuam exigindo avaliação conforme o ambiente e o acervo.
+O código tem testes com dublês da API e validação real do login, envio (incluindo múltiplos blocos), edição, renomeação, retenção, reaparecimento e pausa. A release pública atual é `0.1.1`, com correções de segurança da interface local. O mantenedor confirmou o fluxo manual de desinstalação, limpeza do estado de teste, nova autorização e reinstalação com backup em outro Ubuntu na `0.1.0`; recuperação, falhas de rede e escala continuam exigindo avaliação conforme o ambiente e o acervo.
 
 ## Estado da distribuição oficial
 

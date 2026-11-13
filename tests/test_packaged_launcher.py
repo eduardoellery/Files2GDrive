@@ -27,7 +27,7 @@ class PackagedLauncherTests(unittest.TestCase):
         output = io.StringIO()
         with redirect_stdout(output):
             main(self.resources, Path('/usr/bin/files2gdrive'), ['--version'])
-        self.assertEqual(output.getvalue().strip(), 'Files2GDrive 0.1.0')
+        self.assertEqual(output.getvalue().strip(), 'Files2GDrive 0.1.1')
         (self.resources / 'VERSION').write_text('0.1.1\n')
         output = io.StringIO()
         with redirect_stdout(output):

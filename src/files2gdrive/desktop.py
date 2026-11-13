@@ -10,14 +10,14 @@ import webbrowser
 
 from .desktop_ipc import LocalControlError, _private_state, request
 from .notifications import NotificationPolicy
-from .tray import validate_launch_url
+from .tray import validate_launch_file
 
 log = logging.getLogger('files2gdrive')
 
 
 def open_configuration(state_directory, opener=webbrowser.open):
     result = request(state_directory, 'open')
-    url = validate_launch_url(result.get('url'))
+    url = validate_launch_file(result.get('url'), state_directory)
     if opener(url) is False:
         raise RuntimeError('Não foi possível abrir o navegador padrão')
     return url

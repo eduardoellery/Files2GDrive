@@ -1,19 +1,19 @@
-# Instalador Debian — release pública 0.1.0
+# Instalador Debian — release pública 0.1.1
 
 ## Artefato gerado
 
-`dist/files2gdrive_0.1.0_amd64.deb`
+`dist/files2gdrive_0.1.1_amd64.deb`
 
 Alvo: Ubuntu 24.04, arquitetura amd64, Python do sistema 3.12. Não é um pacote arm64 nem uma versão validada para outras versões do Ubuntu.
 
-A release pública é `0.1.0`, sem sufixo de pré-lançamento. O mantenedor confirmou o fluxo de desinstalação, limpeza do estado de teste, nova autorização e reinstalação com backup em outro Ubuntu. Testes automatizados, execução do pacote extraído e instalação/reinstalação/remoção em raiz dpkg descartável complementam essa validação. Políticas específicas de domínios Google Workspace continuam dependentes de validação no ambiente alvo.
+A release pública atual é `0.1.1`, sem sufixo de pré-lançamento. Ela corrige o bootstrap e o isolamento da sessão local; veja o [histórico de versões](../CHANGELOG.md). O mantenedor confirmou o fluxo de desinstalação, limpeza do estado de teste, nova autorização e reinstalação com backup em outro Ubuntu na `0.1.0`. Testes automatizados, execução do pacote extraído e instalação/reinstalação/remoção em raiz dpkg descartável complementam essa validação. Políticas específicas de domínios Google Workspace continuam dependentes de validação no ambiente alvo.
 
 ## Instalar
 
 Fechar o Files2GDrive antes de instalar, atualizar ou remover. No diretório do arquivo:
 
 ```bash
-sudo apt install ./files2gdrive_0.1.0_amd64.deb
+sudo apt install ./files2gdrive_0.1.1_amd64.deb
 ```
 
 O APT instala as dependências nativas necessárias. As dependências Python estão incluídas no pacote; não é necessário instalar pip ou montar um ambiente virtual na máquina destinatária.
@@ -26,7 +26,7 @@ Abrir **Files2GDrive** no menu de aplicativos ou executar:
 
 A primeira execução prepara um perfil novo em modo Google Drive, sem pastas monitoradas nem autorização Google. A identificação OAuth Desktop do aplicativo está integrada; clicar em **Conectar ao Google** e autorizar a própria conta. Não é necessário criar projeto ou fornecer JSON por destinatário.
 
-**O projeto OAuth da distribuição oficial está em produção** desde a atualização informada pelo mantenedor em 2 de novembro de 2026; não é mais necessário cadastrar cada conta como testadora. O domínio teve a propriedade verificada no Google Search Console e o site público usa HTTPS obrigatório com certificado válido. Contas Workspace continuam sujeitas às políticas da organização. Quem construir uma distribuição com cliente OAuth próprio precisa configurar e publicar esse projeto separadamente; em Testing, continuam valendo suas restrições de contas testadoras. A versão pública atual do aplicativo é `0.1.0`.
+**O projeto OAuth da distribuição oficial está em produção** desde a atualização informada pelo mantenedor em 2 de novembro de 2026; não é mais necessário cadastrar cada conta como testadora. O domínio teve a propriedade verificada no Google Search Console e o site público usa HTTPS obrigatório com certificado válido. Contas Workspace continuam sujeitas às políticas da organização. Quem construir uma distribuição com cliente OAuth próprio precisa configurar e publicar esse projeto separadamente; em Testing, continuam valendo suas restrições de contas testadoras. A versão pública atual do aplicativo é `0.1.1`.
 
 Estado por usuário: `$XDG_STATE_HOME/files2gdrive` quando absoluto; caso contrário, `~/.local/state/files2gdrive`. Tokens continuam no Secret Service/cofre do Ubuntu.
 
@@ -96,7 +96,7 @@ O mantenedor validou o fluxo de desinstalação, remoção do estado de teste, n
 6. Se quiser repetir também a concessão de acesso no Google, remova o vínculo nas [conexões da Conta Google](https://myaccount.google.com/connections). Isso é opcional: `logout` já remove a credencial local. A revogação no Google pode invalidar a autorização do mesmo aplicativo em **outras instalações que usam a mesma conta**, não apenas no Ubuntu de testes. Revogar não apaga arquivos do Drive.
 7. Reinstale o `.deb`, abra o aplicativo e confirme o pedido de login e a seleção inicialmente vazia. Configure um pequeno backup e teste envio, alteração, exclusão e reinicialização.
 
-A atualização do mesmo projeto OAuth de Testing para produção é uma configuração do Google; não exige substituir o JSON OAuth integrado nem limpar perfis de quem apenas atualiza o aplicativo. O pacote `0.1.0` mantém o mesmo cliente da distribuição oficial. Não refaça a limpeza ao atualizar uma instalação que deve continuar seu backup existente.
+A atualização do mesmo projeto OAuth de Testing para produção é uma configuração do Google; não exige substituir o JSON OAuth integrado nem limpar perfis de quem apenas atualiza o aplicativo. O pacote `0.1.1` mantém o mesmo cliente da distribuição oficial. Não refaça a limpeza ao atualizar uma instalação que deve continuar seu backup existente.
 
 ## Verificar integridade
 
@@ -116,7 +116,7 @@ O builder recebe dependências previamente reunidas e um cliente Desktop válido
 .venv/bin/python scripts/build_deb.py \
   --vendor-dir /caminho/vendor \
   --oauth-client /caminho/cliente-desktop.json \
-  --output-dir dist --version '0.1.0'
+  --output-dir dist --version '0.1.1'
 ```
 
 Versões e hashes das 44 dependências estão em `packaging/requirements-release.lock`. Para preparar o vendor com pip em um ambiente Python de construção:
@@ -138,8 +138,8 @@ A construção usa uma whitelist de módulos/assets e rejeita tokens no JSON OAu
 - Instalação, reinstalação, remoção e purge passaram em raiz/banco dpkg temporários. Dependências foram forçadas apenas nesse banco vazio; dependências reais foram verificadas separadamente. Um arquivo representando estado pessoal sobreviveu intacto.
 - As validações automatizadas usam raiz dpkg isolada. Separadamente, o mantenedor confirmou a instalação e o fluxo de recomeço com autenticação e backup em outro Ubuntu com sessão gráfica.
 
-A versão `0.1.0` inclui o seletor de pastas com exceções por subdiretório, indicador de autenticação, preparação de diretórios em lote e até quatro uploads simultâneos. Arquivos de até 5 MiB usam upload multipart; maiores usam upload retomável. O esquema atual do banco é 4; não execute o alpha1 sobre um perfil já migrado.
+A versão `0.1.1` inclui as funcionalidades da `0.1.0` e as correções de segurança descritas no changelog: o arquivo de bootstrap usa token por POST e a API exige bearer por sessão. O esquema atual do banco é 4; não execute o alpha1 sobre um perfil já migrado.
 
 A aplicação usa a licença MIT, cujo texto acompanha o pacote em `/usr/share/doc/files2gdrive/copyright`. As dependências mantêm suas próprias licenças, incluídas no diretório privado do aplicativo.
 
-A versão Debian interna e a do instalador público são `0.1.0`, com arquivo `files2gdrive_0.1.0_amd64.deb` e tag Git `v0.1.0`. Essa versão tem precedência sobre a pré-release anterior `0.1.0~alpha3`, permitindo atualização via APT. A pré-release permanece disponível no histórico, com seus artefatos originais.
+A versão Debian interna e a do instalador público são `0.1.1`, com arquivo `files2gdrive_0.1.1_amd64.deb` e tag Git `v0.1.1`. A instalação atualiza a `0.1.0` pelo APT e preserva estado e dados pessoais. A pré-release `0.1.0~alpha3` permanece disponível no histórico, com seus artefatos originais.

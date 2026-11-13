@@ -46,7 +46,7 @@ class PackageTests(unittest.TestCase):
         import tomllib
         artifact = self.build(); target = self.extract(artifact)
         version = tomllib.loads((builder.REPOSITORY / 'pyproject.toml').read_text())['project']['version']
-        self.assertEqual(version, '0.1.0')
+        self.assertEqual(version, '0.1.1')
         self.assertEqual(artifact.name, f'files2gdrive_{version}_amd64.deb')
         self.assertEqual((target / 'usr/share/files2gdrive/VERSION').read_text().strip(), version)
         actual = subprocess.check_output(['dpkg-deb', '--field', str(artifact), 'Version'], text=True).strip()
